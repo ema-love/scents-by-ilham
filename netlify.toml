@@ -1,0 +1,14 @@
+# Netlify builds this Next.js app with its official Next.js runtime (detected automatically).
+# Secrets are set in the Netlify UI: Site configuration → Environment variables. Never here.
+# The store's data (products, orders, settings, images, receipts) lives in Netlify Blobs —
+# nothing to provision: it is created automatically for the site.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Public by design (shown on the site), so the secret scanner should not flag them.
+  # ADMIN_PASSWORD and SESSION_SECRET are still scanned.
+  SECRETS_SCAN_OMIT_KEYS = "ADMIN_NAME,SBI_STORAGE"
