@@ -20,14 +20,12 @@ export function Sprig({ className }: { className?: string }) {
   );
 }
 
+/** The Scents by Ilham wordmark: script "Scents" in the brand purple over a bold "BY ILHAM". */
 export function Logo({ className }: { className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 text-foreground", className)}>
-      <Sprig className="text-lavender-ink" />
-      <span className="flex items-baseline gap-1.5 leading-none">
-        <span className="font-display text-[22px] tracking-[-0.02em]">Scents</span>
-        <span className="font-display text-[15px] text-muted-foreground italic">by Ilham</span>
-      </span>
+    <span className={cn("inline-flex flex-col items-center leading-none", className)}>
+      <span className="font-script text-[32px] leading-[0.8] text-lavender-ink">Scents</span>
+      <span className="mt-0.5 text-[10.5px] font-bold tracking-[0.2em] text-foreground">BY ILHAM</span>
     </span>
   );
 }

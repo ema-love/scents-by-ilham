@@ -19,12 +19,13 @@
   --lavender: #b7a3db;
   --lavender-soft: #ede6f7;
   --lavender-wash: #f5f1fa;
-  --lavender-ink: #5a4686;
+  /* The purple from the Scents by Ilham wordmark: the brand's pop of colour. */
+  --lavender-ink: #74399c;
   --plum: #3a2843;
 
   --primary: #2b2130;
   --primary-foreground: #fbf7f1;
-  --ring: #8c74c0;
+  --ring: #8e56b8;
 
   --success: #2e6a49;
   --success-soft: #e3f0e7;
@@ -66,6 +67,7 @@
 
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-script: var(--font-allura), cursive;
 
   --radius-sm: calc(var(--radius) - 0.5rem);
   --radius-md: calc(var(--radius) - 0.25rem);

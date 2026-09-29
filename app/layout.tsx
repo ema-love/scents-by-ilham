@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { Allura, DM_Sans, Fraunces } from "next/font/google";
 import { Providers } from "@/components/providers/providers";
 import { brand } from "@/lib/brand";
 import "./globals.css";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["SOFT", "WONK", "opsz"], display: "swap" });
+/** Script face used only for the "Scents" wordmark. */
+const allura = Allura({ subsets: ["latin"], weight: "400", variable: "--font-allura", display: "swap" });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
 
 export const metadata: Metadata = {
@@ -27,7 +29,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-NG" className={`${fraunces.variable} ${dmSans.variable}`}>
+    <html lang="en-NG" className={`${fraunces.variable} ${allura.variable} ${dmSans.variable}`}>
       <body className="min-h-dvh font-sans">
         <a
           href="#main"
