@@ -339,7 +339,7 @@ export function CheckoutForm({ catalog, fulfilment, bankName }: { catalog: Check
             </ul>
             <p className="flex items-baseline justify-between p-4">
               <span className="font-medium">Total to pay</span>
-              <span className="font-display text-3xl tabular-nums">{formatNaira(total)}</span>
+              <span className="figure text-3xl tabular-nums">{formatNaira(total)}</span>
             </p>
             <dl className="grid gap-3 p-4 text-[15px]">
               <div>

@@ -58,7 +58,7 @@ export default async function AdminOrderPage(props: PageProps<"/admin/orders/[id
         <ChevronLeft className="size-4" aria-hidden /> Orders
       </Link>
       <div className="mt-1 flex flex-wrap items-end justify-between gap-2">
-        <h1 className="font-display text-[clamp(2.25rem,9vw,3rem)] leading-none">{order.number}</h1>
+        <h1 className="figure text-[clamp(2.25rem,9vw,3rem)] leading-none">{order.number}</h1>
         <p className="text-[14px] text-muted-foreground">Placed {formatDate(order.createdAt)}</p>
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
@@ -71,7 +71,7 @@ export default async function AdminOrderPage(props: PageProps<"/admin/orders/[id
         <Card title="Payment" id="payment-title">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <p className="text-[15px] text-muted-foreground">Amount</p>
-            <p className="font-display text-3xl tabular-nums">{formatNaira(order.total)}</p>
+            <p className="figure text-3xl tabular-nums">{formatNaira(order.total)}</p>
           </div>
           <dl className="mt-3 grid gap-2 text-[14.5px]">
             <div className="flex justify-between gap-3">

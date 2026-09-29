@@ -89,7 +89,7 @@ function Headline({ order, settings, placed }: { order: Order; settings: StoreSe
 function Hero({ title, tone, children }: { title: string; tone?: "danger" | "attention"; children: React.ReactNode }) {
   return (
     <div className={tone === "danger" ? "rounded-2xl bg-danger-soft p-5 ring-1 ring-danger/20" : tone === "attention" ? "rounded-2xl bg-attention-soft p-5 ring-1 ring-attention/20" : ""}>
-      <h2 className="display text-[clamp(1.9rem,7vw,2.6rem)]">{title}</h2>
+      <h2 className="headline text-[clamp(2rem,7.5vw,2.75rem)]">{title}</h2>
       <p className="mt-2 text-[16px] leading-relaxed text-muted-foreground">{children}</p>
     </div>
   );
@@ -104,7 +104,7 @@ function PaymentInstructions({ order, settings }: { order: Order; settings: Stor
         Pay by bank transfer
       </h2>
       <p className="mt-3 text-[15px] text-muted-foreground">Please transfer</p>
-      <p className="font-display text-[clamp(2.75rem,12vw,3.5rem)] leading-none tracking-[-0.02em] tabular-nums">{formatNaira(order.total)}</p>
+      <p className="figure text-[clamp(2.75rem,12vw,3.5rem)] leading-none tracking-[-0.02em] tabular-nums">{formatNaira(order.total)}</p>
       {order.deliveryFee === null && order.fulfilment.method === "delivery" && (
         <p className="mt-2 text-[14px] text-muted-foreground">Delivery fee not included — we&rsquo;ll confirm it with you.</p>
       )}
@@ -116,7 +116,7 @@ function PaymentInstructions({ order, settings }: { order: Order; settings: Stor
         <div className="flex items-center justify-between gap-3 p-4">
           <div>
             <dt className="text-[14.5px] text-muted-foreground">Account number</dt>
-            <dd className="font-display text-[26px] leading-tight tracking-[0.02em] tabular-nums">{accountNumber}</dd>
+            <dd className="figure text-[26px] leading-tight tracking-[0.02em] tabular-nums">{accountNumber}</dd>
           </div>
           <CopyButton value={accountNumber} label="Copy account number" />
         </div>
@@ -151,7 +151,7 @@ export default async function OrderPage(props: PageProps<"/orders/[number]">) {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-[14px] text-muted-foreground">Your order number</p>
-          <h1 className="font-display text-[clamp(2.4rem,10vw,3.25rem)] leading-none tracking-[-0.01em]">{order.number}</h1>
+          <h1 className="figure text-[clamp(2.4rem,10vw,3.25rem)] leading-none tracking-[-0.01em]">{order.number}</h1>
         </div>
         <CopyButton value={order.number} label="Copy order number" />
       </div>
@@ -207,7 +207,7 @@ export default async function OrderPage(props: PageProps<"/orders/[number]">) {
           </ul>
           <p className="mt-3 flex items-baseline justify-between border-t pt-3">
             <span className="font-medium">Total</span>
-            <span className="font-display text-2xl tabular-nums">{formatNaira(order.total)}</span>
+            <span className="figure text-2xl tabular-nums">{formatNaira(order.total)}</span>
           </p>
           <dl className="mt-5 grid gap-3 text-[15px] sm:grid-cols-2">
             <div>

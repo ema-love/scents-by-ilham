@@ -12,17 +12,17 @@ import { formatPhone, telHref } from "@/lib/phone";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 
-function CartLink({ className }: { className?: string }) {
+function CartLink({ className, dark }: { className?: string; dark?: boolean }) {
   const { count, ready } = useCart();
   return (
     <Link
       href="/checkout"
-      className={cn("relative grid size-11 place-items-center rounded-full text-foreground transition-colors hover:bg-muted", className)}
+      className={cn("relative grid size-11 place-items-center rounded-full transition-colors", dark ? "text-primary-foreground hover:bg-white/10" : "text-foreground hover:bg-muted", className)}
       aria-label={ready && count > 0 ? `Your order: ${count} item${count === 1 ? "" : "s"}` : "Your order"}
     >
       <ShoppingBag className="size-[22px]" strokeWidth={1.7} />
       {ready && count > 0 && (
-        <span aria-hidden className="absolute top-1 right-0.5 grid min-w-5 place-items-center rounded-full bg-lavender-ink px-1 text-[11px] leading-5 font-semibold text-white animate-fade">
+        <span aria-hidden className="absolute top-1 right-0.5 grid min-w-5 place-items-center rounded-full bg-lavender px-1 text-plum text-[11px] leading-5 font-semibold animate-fade">
           {count}
         </span>
       )}
@@ -34,9 +34,13 @@ export function Header({ phone }: { phone: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      setPastHero(window.scrollY > window.innerHeight * 0.55);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -46,12 +50,19 @@ export function Header({ phone }: { phone: string }) {
   useEffect(() => setOpen(false), [pathname]);
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  // On the homepage the header melts into the plum hero until the page scrolls.
+  const dark = pathname === "/" && !pastHero;
 
   return (
-    <header className={cn("sticky top-0 z-40 transition-[background-color,box-shadow] duration-300", scrolled ? "bg-background/92 shadow-[0_1px_0_var(--border)] backdrop-blur-md" : "bg-background")}>
+    <header
+      className={cn(
+        "sticky top-0 z-40 transition-[background-color,box-shadow,color] duration-300",
+        dark ? "bg-plum text-primary-foreground" : scrolled ? "bg-background/92 shadow-[0_1px_0_var(--border)] backdrop-blur-md" : "bg-background",
+      )}
+    >
       <nav aria-label="Main" className="page flex h-16 items-center justify-between gap-2">
         <Link href="/" aria-label="Scents by Ilham — home" className="-ml-1 rounded-lg px-1 py-1">
-          <Logo />
+          <Logo tone={dark ? "light" : "dark"} />
         </Link>
 
         <ul className="hidden items-center gap-1 lg:flex">
@@ -61,8 +72,8 @@ export function Header({ phone }: { phone: string }) {
                 href={l.href}
                 aria-current={isActive(l.href) ? "page" : undefined}
                 className={cn(
-                  "rounded-full px-3.5 py-2 text-[14.5px] transition-colors hover:text-foreground",
-                  isActive(l.href) ? "font-medium text-foreground" : "text-muted-foreground",
+                  "nav-link border-b px-3 py-2 transition-colors",
+                  isActive(l.href) ? "border-current" : "border-transparent opacity-75 hover:opacity-100",
                 )}
               >
                 {l.label}
@@ -72,13 +83,13 @@ export function Header({ phone }: { phone: string }) {
         </ul>
 
         <div className="flex items-center gap-1">
-          <Button asChild size="sm" className="hidden h-10 px-4 sm:inline-flex">
+          <Button asChild size="sm" variant={dark ? "outline" : "primary"} className="hidden h-10 px-4 sm:inline-flex">
             <Link href="/shop">Shop Now</Link>
           </Button>
-          <CartLink />
+          <CartLink dark={dark} />
           <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
             <DialogPrimitive.Trigger asChild>
-              <button className="grid size-11 place-items-center rounded-full hover:bg-muted lg:hidden" aria-label="Open menu">
+              <button className={cn("grid size-11 place-items-center rounded-full lg:hidden", dark ? "hover:bg-white/10" : "hover:bg-muted")} aria-label="Open menu">
                 <Menu className="size-[22px]" strokeWidth={1.7} />
               </button>
             </DialogPrimitive.Trigger>
@@ -100,7 +111,7 @@ export function Header({ phone }: { phone: string }) {
                         onClick={() => setOpen(false)}
                         aria-current={isActive(l.href) ? "page" : undefined}
                         className={cn(
-                          "flex min-h-14 items-center rounded-xl px-3 font-display text-[26px] tracking-[-0.01em] transition-colors hover:bg-lavender-wash",
+                          "flex min-h-14 items-center rounded-md px-3 font-display text-[28px] font-medium tracking-[0.02em] uppercase transition-colors hover:bg-lavender-wash",
                           isActive(l.href) && "text-lavender-ink",
                         )}
                       >
@@ -115,7 +126,7 @@ export function Header({ phone }: { phone: string }) {
                       Shop Now
                     </Link>
                   </Button>
-                  <a href={telHref(phone)} className="flex h-12 items-center justify-center gap-2 rounded-full text-[15px] text-muted-foreground hover:bg-muted">
+                  <a href={telHref(phone)} className="figure flex h-12 items-center justify-center gap-2 rounded-md text-[15px] font-medium text-muted-foreground hover:bg-muted">
                     <Phone className="size-4" aria-hidden /> Call {formatPhone(phone)}
                   </a>
                 </div>
