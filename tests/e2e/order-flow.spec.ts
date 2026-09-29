@@ -114,7 +114,8 @@ test("a product marked out of stock after the customer saw it can't be ordered",
 
   // The shop shows it as unavailable, and the product page offers no order button.
   await page.goto("/products/kulacham");
-  await expect(page.getByText("This product is currently unavailable.")).toBeVisible();
+  // Scoped to <main>: while a page streams in, Next.js briefly keeps a hidden copy of the content.
+  await expect(page.locator("#main").getByText("This product is currently unavailable.")).toBeVisible();
   await expect(page.locator("#order")).toHaveCount(0);
 
   // And back in stock again.
