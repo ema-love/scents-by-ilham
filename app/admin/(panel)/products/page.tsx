@@ -84,7 +84,7 @@ export default async function ProductsPage(props: PageProps<"/admin/products">) 
                   <Thumb product={p} />
                   <div className="min-w-0 flex-1">
                     <p className="font-medium">{p.name}</p>
-                    <p className="figure text-xl">{formatNaira(p.price)}</p>
+                    <p className="font-display text-xl">{formatNaira(p.price)}</p>
                   </div>
                   <Button asChild variant="secondary" size="icon" aria-label={`Edit ${p.name}`}>
                     <Link href={`/admin/products/${p.id}`}>
@@ -122,7 +122,7 @@ export default async function ProductsPage(props: PageProps<"/admin/products">) 
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-right figure text-lg tabular-nums">{formatNaira(p.price)}</td>
+                    <td className="px-4 py-3 text-right font-display text-lg tabular-nums">{formatNaira(p.price)}</td>
                     <td className="px-4 py-3">
                       <ProductToggles id={p.id} name={p.name} availability={p.availability} visibility={p.visibility} />
                     </td>

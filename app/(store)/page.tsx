@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Camera, ClipboardCheck, Landmark, PackageCheck, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductGrid } from "@/components/store/product-card";
 import { ProductVisual } from "@/components/store/product-visual";
@@ -14,13 +14,11 @@ import { getSettings } from "@/lib/server/repo/settings";
 export const dynamic = "force-dynamic";
 
 const steps = [
-  { title: "Choose", text: "Add the scents you love to your order. No account needed." },
-  { title: "Transfer", text: "We show you exactly how much to send, and where." },
-  { title: "Upload", text: "Send a screenshot of your transfer receipt." },
-  { title: "Track", text: "Follow every step with your order number and phone." },
+  { icon: ShoppingBag, title: "Choose your scents", text: "Add what you love to your order. No account needed." },
+  { icon: Landmark, title: "Transfer the amount", text: "We show you exactly how much to send, and where." },
+  { icon: Camera, title: "Upload your receipt", text: "A screenshot from your banking app is perfect." },
+  { icon: PackageCheck, title: "Track your order", text: "Use your order number and phone to follow each step." },
 ];
-
-const instagramHandle = (url: string) => url.match(/instagram\.com\/([^/?#]+)/i)?.[1];
 
 export default async function HomePage() {
   const [products, settings] = await Promise.all([publicProducts(), getSettings()]);
@@ -33,38 +31,39 @@ export default async function HomePage() {
     return { name, count: inCat.length, from: Math.min(...inCat.map((p) => p.price)) };
   });
   const socials = socialLinks(settings);
-  const handle = settings.instagram ? instagramHandle(settings.instagram) : undefined;
 
   return (
     <>
-      {/* Hero: plum, lavender light, the products themselves. Short enough that the shop starts on the first screen. */}
-      <section aria-labelledby="hero-title" className="relative -mt-px overflow-hidden bg-plum text-primary-foreground">
-        <div aria-hidden className="pointer-events-none absolute -top-32 right-[-10%] size-[560px] rounded-full bg-[radial-gradient(closest-side,rgb(184_158_224/0.38),transparent)]" />
-        <div aria-hidden className="pointer-events-none absolute bottom-[-40%] left-[-20%] size-[520px] rounded-full bg-[radial-gradient(closest-side,rgb(106_75_152/0.45),transparent)]" />
-        <div className="page relative grid items-center gap-9 pt-8 pb-12 sm:pt-12 md:grid-cols-[1.05fr_1fr] md:gap-12 md:pb-20 lg:pt-16">
+      {/* Hero: short enough that the products start on the first screen. */}
+      <section aria-labelledby="hero-title" className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-40 -right-32 size-[520px] rounded-full bg-[radial-gradient(closest-side,var(--lavender-soft),transparent)] opacity-90"
+        />
+        <div className="page relative grid items-center gap-8 pt-8 pb-10 sm:pt-12 md:grid-cols-[1.1fr_1fr] md:gap-12 md:pb-16 lg:pt-16">
           <div className="animate-rise">
-            <p className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.22em] text-lavender uppercase">
+            <p className="eyebrow flex items-center gap-2">
               <Sprig className="h-5 w-4" /> Scents by Ilham
             </p>
-            <h1 id="hero-title" className="display mt-5 text-[clamp(3rem,13vw,5.5rem)]">
-              Scents that feel like <span className="text-lavender italic">you.</span>
+            <h1 id="hero-title" className="display mt-4 text-[clamp(2.6rem,10vw,4.75rem)]">
+              Scents that feel like <em className="text-lavender-ink">you.</em>
             </h1>
-            <p className="mt-5 max-w-sm text-[16.5px] leading-relaxed text-primary-foreground/80">
+            <p className="lede mt-4 max-w-md">
               Beautiful fragrance, thoughtfully presented — at prices that make sense.
               {from !== null && (
                 <>
                   {" "}
-                  Everything from <span className="figure whitespace-nowrap text-primary-foreground">{formatNaira(from)}</span>.
+                  Everything from <span className="font-medium whitespace-nowrap text-foreground">{formatNaira(from)}</span>.
                 </>
               )}
             </p>
-            <div className="mt-8 flex flex-col gap-2.5 min-[400px]:flex-row">
-              <Button asChild size="lg" className="bg-primary-foreground text-plum hover:bg-lavender-soft">
+            <div className="mt-7 flex flex-col gap-2.5 min-[400px]:flex-row">
+              <Button asChild size="lg">
                 <Link href="/shop">
                   Shop Scents <ArrowRight />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline">
+              <Button asChild size="lg" variant="secondary">
                 <Link href="#collection">Explore the Collection</Link>
               </Button>
             </div>
@@ -73,8 +72,8 @@ export default async function HomePage() {
           {heroProducts.length > 0 && (
             <div className="grid grid-cols-3 items-end gap-2.5 animate-rise [animation-delay:120ms] sm:gap-3" aria-hidden>
               {heroProducts.map((p, i) => (
-                <Link key={p.id} href={`/products/${p.slug}`} tabIndex={-1} className={i === 1 ? "-translate-y-6" : ""}>
-                  <ProductVisual product={p} priority sizes="(min-width: 768px) 16vw, 30vw" className="shadow-[0_24px_40px_-20px_rgb(0_0_0/0.6)] ring-1 ring-white/10" />
+                <Link key={p.id} href={`/products/${p.slug}`} tabIndex={-1} className={i === 1 ? "-translate-y-5" : ""}>
+                  <ProductVisual product={p} priority sizes="(min-width: 768px) 16vw, 30vw" className="shadow-soft ring-1 ring-border" />
                 </Link>
               ))}
             </div>
@@ -84,17 +83,17 @@ export default async function HomePage() {
 
       {/* Collections, price first */}
       {categories.length > 1 && (
-        <section aria-label="Collections" className="page pt-8">
+        <section aria-label="Collections" className="page">
           <ul className="no-scrollbar -mx-[var(--page-gutter)] flex snap-x gap-3 overflow-x-auto px-[var(--page-gutter)] pb-1">
             {categories.map((c) => (
               <li key={c.name} className="snap-start">
                 <Link
                   href={`/shop?category=${encodeURIComponent(c.name)}`}
-                  className="flex min-h-16 min-w-[220px] flex-col justify-center rounded-md bg-card px-5 py-3 ring-1 ring-border transition-colors hover:bg-lavender-wash"
+                  className="flex min-h-16 min-w-[210px] flex-col justify-center rounded-2xl bg-card px-5 py-3 ring-1 ring-border transition-colors hover:bg-lavender-wash"
                 >
-                  <span className="font-display text-xl font-medium">{c.name}</span>
+                  <span className="font-display text-lg">{c.name}</span>
                   <span className="text-[13.5px] text-muted-foreground">
-                    {c.count} {c.count === 1 ? "scent" : "scents"} · from <span className="figure">{formatNaira(c.from)}</span>
+                    {c.count} {c.count === 1 ? "scent" : "scents"} · from {formatNaira(c.from)}
                   </span>
                 </Link>
               </li>
@@ -108,80 +107,77 @@ export default async function HomePage() {
         <div className="flex items-end justify-between gap-4">
           <div>
             <p className="eyebrow">The collection</p>
-            <h2 id="collection-title" className="display mt-2 text-[clamp(2.1rem,7vw,3rem)]">
-              Our scents
+            <h2 id="collection-title" className="headline mt-2 text-[clamp(1.9rem,6vw,2.75rem)]">
+              Chosen with care.
             </h2>
           </div>
-          <Link href="/shop" className="nav-link inline-flex min-h-11 shrink-0 items-center gap-1.5 text-lavender-ink hover:text-plum">
+          <Link href="/shop" className="inline-flex min-h-11 shrink-0 items-center gap-1 text-[15px] font-medium text-lavender-ink hover:text-plum">
             See all <ArrowRight className="size-4" aria-hidden />
           </Link>
         </div>
         {products.length ? (
           <ProductGrid products={products} className="mt-7" />
         ) : (
-          <p className="mt-8 rounded-md bg-card p-6 text-center text-muted-foreground ring-1 ring-border">New scents are on the way. Check back soon.</p>
+          <p className="mt-8 rounded-2xl bg-card p-6 text-center text-muted-foreground ring-1 ring-border">New scents are on the way. Check back soon.</p>
         )}
         {products.length > 0 && !products.some(isOrderable) && (
           <p className="mt-6 text-center text-[15px] text-muted-foreground">Everything is sold out right now — restocks are on the way.</p>
         )}
       </section>
 
-      {/* Brand banner */}
-      <section aria-label="Our promise" className="page pt-16">
-        <div className="relative overflow-hidden rounded-lg bg-[linear-gradient(120deg,var(--plum-soft),#7b5fa8)] px-6 py-10 text-primary-foreground sm:px-10 sm:py-14">
-          <Sprig className="absolute -right-2 -bottom-3 h-40 w-28 opacity-40" />
-          <Sprig className="absolute right-16 -bottom-8 hidden h-32 w-24 rotate-12 opacity-25 sm:block" />
-          <p className="headline max-w-md text-[clamp(1.9rem,6vw,2.6rem)]">Carefully curated. Beautifully presented. Honestly priced.</p>
-          <Link href="/about" className="nav-link mt-6 inline-flex min-h-11 items-center gap-1.5 text-lavender-soft hover:text-white">
-            About us <ArrowRight className="size-4" aria-hidden />
-          </Link>
-        </div>
-      </section>
-
       {/* How ordering works */}
-      <section aria-labelledby="how-title" className="page pt-16">
-        <p className="eyebrow">Ordering is simple</p>
-        <h2 id="how-title" className="display mt-2 text-[clamp(2.1rem,7vw,3rem)]">
-          How to order
-        </h2>
-        <p className="mt-2 max-w-md text-muted-foreground">From your phone, in four steps. Every transfer is checked by hand before your order is confirmed.</p>
-        <ol className="mt-7 grid grid-cols-2 gap-2.5 lg:grid-cols-4 lg:gap-3">
-          {steps.map((s, i) => (
-            <li key={s.title} className="flex min-h-44 flex-col justify-end rounded-md bg-plum p-4 text-primary-foreground sm:p-5">
-              <span className="font-display text-[2.6rem] leading-none font-medium text-lavender" aria-hidden>
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <p className="mt-3 text-[12.5px] font-semibold tracking-[0.16em] uppercase">
-                <span className="sr-only">Step {i + 1}: </span>
-                {s.title}
-              </p>
-              <p className="mt-1 text-[14px] leading-snug text-primary-foreground/75">{s.text}</p>
-            </li>
-          ))}
-        </ol>
-        <Link href="/help" className="nav-link mt-5 inline-flex min-h-11 items-center gap-1.5 text-lavender-ink hover:text-plum">
-          Ordering, pickup &amp; delivery <ArrowRight className="size-4" aria-hidden />
-        </Link>
+      <section aria-labelledby="how-title" className="page pt-20">
+        <div className="rounded-3xl bg-card p-6 ring-1 ring-border sm:p-10">
+          <p className="eyebrow">Ordering is simple</p>
+          <h2 id="how-title" className="headline mt-2 text-[clamp(1.75rem,5vw,2.5rem)]">
+            From your phone, in four steps.
+          </h2>
+          <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map((s, i) => (
+              <li key={s.title} className="flex gap-4 lg:flex-col">
+                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-lavender-soft text-lavender-ink">
+                  <s.icon className="size-5" aria-hidden />
+                </span>
+                <div>
+                  <p className="font-medium">
+                    <span className="sr-only">Step {i + 1}: </span>
+                    {s.title}
+                  </p>
+                  <p className="mt-1 text-[15px] leading-relaxed text-muted-foreground">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-8 flex items-start gap-2 text-[14.5px] text-muted-foreground">
+            <ClipboardCheck className="mt-0.5 size-4 shrink-0 text-lavender-ink" aria-hidden />
+            Every transfer is checked by hand before your order is confirmed.{" "}
+            <Link href="/help" className="font-medium text-lavender-ink underline underline-offset-4">
+              How ordering works
+            </Link>
+          </p>
+        </div>
       </section>
 
       {/* Social: shown only when real accounts are linked in settings. */}
       {socials.length > 0 && (
-        <section aria-labelledby="social-title" className="page pt-16">
-          <div className="rounded-lg bg-card p-6 ring-1 ring-border sm:p-10">
-            <p className="eyebrow">Follow along</p>
-            <h2 id="social-title" className="headline mt-2 max-w-lg text-[clamp(1.8rem,5.5vw,2.4rem)]">
-              New scents, fragrance moments and behind the scenes.
-            </h2>
-            <ul className="mt-6 flex flex-wrap gap-2.5">
+        <section aria-labelledby="social-title" className="page pt-20">
+          <div className="grid gap-6 rounded-3xl bg-plum p-6 text-primary-foreground sm:p-10 md:grid-cols-[1.2fr_1fr] md:items-center">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-lavender uppercase">Follow along</p>
+              <h2 id="social-title" className="headline mt-2 text-[clamp(1.75rem,5vw,2.5rem)]">
+                New scents, fragrance tips and behind the scenes.
+              </h2>
+            </div>
+            <ul className="flex flex-wrap gap-2.5">
               {socials.map((s) => (
                 <li key={s.label}>
                   <a
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-12 items-center rounded-[4px] bg-plum px-5 text-[12.5px] font-medium tracking-[0.1em] text-primary-foreground uppercase transition-colors hover:bg-plum-soft"
+                    className="inline-flex h-12 items-center rounded-full bg-white/10 px-5 text-[15px] font-medium ring-1 ring-white/20 transition-colors hover:bg-white/20"
                   >
-                    {s.label === "Instagram" && handle ? `@${handle} on Instagram` : s.label}
+                    {s.label}
                   </a>
                 </li>
               ))}
@@ -190,7 +186,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <div className="page pt-16">
+      <div className="page pt-20">
         <SupportCard settings={settings} title="Questions before you order?" />
       </div>
     </>

@@ -93,7 +93,7 @@ export default async function DashboardHome() {
           {stats.map((s) => (
             <li key={s.label}>
               <Link href={s.href} className="block rounded-2xl bg-card p-4 ring-1 ring-border transition-colors hover:bg-lavender-wash">
-                <p className="figure text-[2.25rem] leading-none tabular-nums">{s.value}</p>
+                <p className="font-display text-[2.25rem] leading-none tabular-nums">{s.value}</p>
                 <p className="mt-2 text-[14px] text-muted-foreground">{s.label}</p>
               </Link>
             </li>

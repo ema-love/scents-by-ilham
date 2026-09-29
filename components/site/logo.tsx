@@ -20,12 +20,14 @@ export function Sprig({ className }: { className?: string }) {
   );
 }
 
-/** Script "Scents" over a tracked "BY ILHAM" — the wordmark from the price list. */
-export function Logo({ className, tone = "dark" }: { className?: string; tone?: "dark" | "light" }) {
+export function Logo({ className }: { className?: string }) {
   return (
-    <span className={cn("inline-flex flex-col items-start leading-none", className)}>
-      <span className={cn("font-script text-[30px] leading-[0.8]", tone === "light" ? "text-lavender" : "text-lavender-ink")}>Scents</span>
-      <span className={cn("mt-0.5 pl-0.5 text-[10px] font-semibold tracking-[0.28em]", tone === "light" ? "text-primary-foreground" : "text-foreground")}>BY ILHAM</span>
+    <span className={cn("inline-flex items-center gap-1.5 text-foreground", className)}>
+      <Sprig className="text-lavender-ink" />
+      <span className="flex items-baseline gap-1.5 leading-none">
+        <span className="font-display text-[22px] tracking-[-0.02em]">Scents</span>
+        <span className="font-display text-[15px] text-muted-foreground italic">by Ilham</span>
+      </span>
     </span>
   );
 }

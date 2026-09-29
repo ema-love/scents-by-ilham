@@ -7,28 +7,20 @@ type Tone = { bg: string; glass: string; cap: string; liquid: string };
 /** Illustration colours hinted by the product's own name — used only until a real photo is uploaded. */
 function toneFor(name: string): Tone {
   const n = name.toLowerCase();
-  if (n.includes("black")) return { bg: "#d9cbeb", glass: "#241a2c", cap: "#b08d57", liquid: "#3a2843" };
-  if (n.includes("white")) return { bg: "#e6dcf2", glass: "#fbf7ef", cap: "#b08d57", liquid: "#efe6d6" };
-  if (n.includes("pink")) return { bg: "#eadbef", glass: "#f1cdd8", cap: "#b08d57", liquid: "#e7b5c6" };
-  if (n.includes("wuta")) return { bg: "#dccfe8", glass: "#d9c7a8", cap: "#6e5438", liquid: "#8a6443" };
-  return { bg: "#e3d6f1", glass: "#cbb6ea", cap: "#b08d57", liquid: "#a585d6" };
+  if (n.includes("black")) return { bg: "#ece5f3", glass: "#2b2130", cap: "#1a141d", liquid: "#3a2843" };
+  if (n.includes("white")) return { bg: "#efe9f7", glass: "#fffdf8", cap: "#d9cfc3", liquid: "#f4efe6" };
+  if (n.includes("pink")) return { bg: "#f6ecef", glass: "#f0cfd8", cap: "#b98895", liquid: "#e9bccb" };
+  if (n.includes("wuta")) return { bg: "#f2ece4", glass: "#d8c3a5", cap: "#8a6d4c", liquid: "#c9ad86" };
+  return { bg: "#f1ecf7", glass: "#c9b8e6", cap: "#5a4686", liquid: "#b7a3db" };
 }
 
 function Illustration({ product }: { product: Pick<Product, "name"> }) {
   const t = toneFor(product.name);
   const incense = product.name.toLowerCase().includes("wuta");
-  const glowId = `glow-${product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   return (
     <svg viewBox="0 0 400 500" role="img" aria-label={`Illustration of ${product.name}`} className="size-full" preserveAspectRatio="xMidYMid slice">
       <rect width="400" height="500" fill={t.bg} />
-      <defs>
-        <radialGradient id={glowId} cx="50%" cy="35%" r="70%">
-          <stop offset="0" stopColor="#fff" stopOpacity=".55" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <rect width="400" height="500" fill={`url(#${glowId})`} />
-      <path d="M40 440c20-22 90-30 160-30s142 8 160 30v60H40z" fill="#5a4570" opacity=".22" />
+      <ellipse cx="200" cy="420" rx="150" ry="18" fill="#3a2843" opacity=".07" />
       {incense ? (
         <g>
           <path d="M200 150c-18 28 22 44 0 74s18 44 0 70" fill="none" stroke="#3a2843" strokeOpacity=".22" strokeWidth="4" strokeLinecap="round" />
@@ -63,7 +55,7 @@ export function ProductVisual({
 }) {
   const image = product.images[0];
   return (
-    <div className={cn("relative aspect-[4/5] overflow-hidden rounded-lg bg-lavender-soft", className)}>
+    <div className={cn("relative aspect-[4/5] overflow-hidden rounded-2xl bg-lavender-wash", className)}>
       {image ? (
         <Image
           src={mediaUrl(image.key)}

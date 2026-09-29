@@ -16,7 +16,7 @@ export function OrderList({ orders, empty = "No orders yet." }: { orders: OrderS
             <Link href={`/admin/orders/${o.id}`} className="block rounded-2xl bg-card p-4 ring-1 ring-border transition-colors hover:bg-lavender-wash">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="figure text-xl leading-tight">{o.number}</p>
+                  <p className="font-display text-xl leading-tight">{o.number}</p>
                   <p className="truncate text-[15px]">{o.customerName}</p>
                 </div>
                 <div className="text-right">

@@ -91,8 +91,8 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
           <div className="animate-rise lg:pt-4">
             {/* 2–4. Name, price, availability */}
             <p className="eyebrow">{p.category}</p>
-            <h1 className="display mt-2 text-[clamp(2.4rem,9vw,3.5rem)]">{p.name}</h1>
-            <p className="figure mt-3 text-[1.75rem] leading-none">{formatNaira(p.price)}</p>
+            <h1 className="display mt-2 text-[clamp(2.1rem,7vw,3.25rem)]">{p.name}</h1>
+            <p className="mt-3 font-display text-[2rem] leading-none tracking-[-0.01em]">{formatNaira(p.price)}</p>
             <Availability product={p} className="mt-3 text-[14.5px]" />
 
             {/* 5. Short description */}

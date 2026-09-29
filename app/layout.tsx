@@ -1,12 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Allura, Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
 import { Providers } from "@/components/providers/providers";
 import { brand } from "@/lib/brand";
 import "./globals.css";
 
-/** Editorial serif for headlines, a script for the "Scents" wordmark only, and a clear sans for everything you read or tap. */
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["400", "500", "600"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
-const allura = Allura({ subsets: ["latin"], weight: "400", variable: "--font-allura", display: "swap" });
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["SOFT", "WONK", "opsz"], display: "swap" });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap" });
 
 export const metadata: Metadata = {
@@ -21,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2e1f3a",
+  themeColor: "#faf6f0",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -29,7 +27,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-NG" className={`${cormorant.variable} ${allura.variable} ${dmSans.variable}`}>
+    <html lang="en-NG" className={`${fraunces.variable} ${dmSans.variable}`}>
       <body className="min-h-dvh font-sans">
         <a
           href="#main"

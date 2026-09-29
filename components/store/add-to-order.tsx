@@ -57,7 +57,7 @@ export function AddToOrder({ productId, name, price, orderable }: Props) {
           setAdded(true);
         }}
       >
-        <ShoppingBag /> Add to order
+        <ShoppingBag /> Add to order &amp; keep shopping
       </Button>
       <div aria-live="polite">
         {added && (
@@ -84,7 +84,7 @@ export function MobileOrderBar({ productId, name, price, orderable }: Props) {
       <div className="mx-auto flex max-w-lg items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="truncate text-[13.5px] text-muted-foreground">{name}</p>
-          <p className="figure text-xl leading-tight">{formatNaira(price)}</p>
+          <p className="font-display text-xl leading-tight">{formatNaira(price)}</p>
         </div>
         {orderable ? (
           <Button

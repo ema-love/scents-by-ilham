@@ -57,7 +57,7 @@ export const defaultSettings: StoreSettings = {
 
   about:
     "Scents by Ilham is a small fragrance shop with a simple idea: beautiful scents, carefully chosen and thoughtfully presented, at prices that make sense for everyday life.",
-  instagram: "https://www.instagram.com/scents_by_ilham/",
+  instagram: "",
   tiktok: "",
   facebook: "",
   x: "",
