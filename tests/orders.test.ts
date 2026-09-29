@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { useMemoryStores, PNG, PDF } from "./helpers";
-import { allProducts, publicProducts, updateProduct, createProduct, deleteProduct } from "@/lib/server/repo/products";
+import { allProducts, publicProducts, updateProduct, createProduct, deleteProduct, resetProductMigrations } from "@/lib/server/repo/products";
+import { seedProducts } from "@/lib/server/seed";
+import { mediaUrl } from "@/lib/domain/products";
 import {
   changeOrderStatus,
   confirmPayment,
@@ -40,6 +42,23 @@ describe("catalogue", () => {
       ["Kulacham", 1000],
     ]);
     expect(products.every((p) => p.availability === "available" && p.visibility === "visible")).toBe(true);
+  });
+
+  it("ships every launch product with its photo", async () => {
+    const products = await allProducts();
+    expect(products.every((p) => p.images.length === 1 && p.images[0].key === `bundled/${p.slug}.webp`)).toBe(true);
+    expect(mediaUrl(products[0].images[0].key)).toBe("/images/products/black-humrah.webp");
+  });
+
+  it("adds photos once to stores seeded before photos existed, and never re-adds removed ones", async () => {
+    const old = seedProducts().map((p) => ({ ...p, images: [] }));
+    await stores.db.set("catalog", { products: old });
+    expect((await allProducts()).every((p) => p.images.length === 1)).toBe(true);
+
+    const p = await blackHumrah();
+    await updateProduct(p.id, { images: [] }, "Ilham");
+    resetProductMigrations();
+    expect((await blackHumrah()).images).toEqual([]);
   });
 
   it("hides hidden and archived products from customers", async () => {

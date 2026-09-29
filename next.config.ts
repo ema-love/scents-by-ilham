@@ -14,8 +14,11 @@ const nextConfig: NextConfig = {
   env: { NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || process.env.URL || "http://localhost:3000" },
   poweredByHeader: false,
   images: {
-    // Product photos are served by /media/… (uploaded from the dashboard). Nothing else is optimised.
-    localPatterns: [{ pathname: "/media/**", search: "" }],
+    // Product photos: uploaded from the dashboard (/media/…) or shipped with the site (/images/products/…).
+    localPatterns: [
+      { pathname: "/media/**", search: "" },
+      { pathname: "/images/products/**", search: "" },
+    ],
     qualities: [70, 80],
     formats: ["image/avif", "image/webp"],
     // Phones first: small widths get their own renditions so a 360px screen never downloads a desktop image.

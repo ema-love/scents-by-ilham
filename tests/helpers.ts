@@ -1,6 +1,7 @@
 import { beforeEach } from "vitest";
 import { MemoryDocStore, setDb } from "@/lib/server/db";
 import { MemoryFileStore, setFiles } from "@/lib/server/files";
+import { resetProductMigrations } from "@/lib/server/repo/products";
 
 /** Fresh in-memory database and file storage for every test. */
 export function useMemoryStores() {
@@ -10,6 +11,7 @@ export function useMemoryStores() {
     state.files = new MemoryFileStore();
     setDb(state.db);
     setFiles(state.files);
+    resetProductMigrations();
   });
   return state;
 }

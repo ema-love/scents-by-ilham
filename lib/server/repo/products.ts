@@ -11,7 +11,7 @@ import {
 import { slugify } from "@/lib/utils";
 import { db, mutate } from "../db";
 import { newId } from "../ids";
-import { seedProducts } from "../seed";
+import { bundledPhoto, seedProducts } from "../seed";
 import { recordAudit } from "./audit";
 
 /**
@@ -21,11 +21,39 @@ import { recordAudit } from "./audit";
 type Catalog = { products: Product[] };
 const KEY = "catalog";
 
+/**
+ * One-time update for stores seeded before the launch photos existed: give each launch product
+ * that still has no photo its bundled photo. Runs once (recorded in the database), so a photo
+ * the owner later removes on purpose never comes back.
+ */
+const PHOTOS_MIGRATION = "migrations/bundled-photos";
+let photosChecked = false;
+async function addBundledPhotos() {
+  if (await db().get(PHOTOS_MIGRATION)) return;
+  await mutate<Catalog>(db(), KEY, (cur) => ({
+    products: (cur?.products ?? []).map((p) => {
+      if (p.images.length) return p;
+      const photo = p.id === `prd_${p.slug.replace(/-/g, "_")}` ? bundledPhoto(p.slug, p.name) : undefined;
+      return photo ? { ...p, images: [photo] } : p;
+    }),
+  }));
+  await db().set(PHOTOS_MIGRATION, { at: new Date().toISOString() }, { onlyIfNew: true });
+}
+
 async function load(): Promise<Product[]> {
   const found = await db().get<Catalog>(KEY);
-  if (found) return found.data.products;
+  if (found) {
+    if (!photosChecked) {
+      const needed = !(await db().get(PHOTOS_MIGRATION));
+      if (needed) await addBundledPhotos();
+      photosChecked = true;
+      if (needed) return (await db().get<Catalog>(KEY))!.data.products;
+    }
+    return found.data.products;
+  }
   // First run: write the launch catalogue. onlyIfNew makes this safe if two requests race.
   await db().set<Catalog>(KEY, { products: seedProducts() }, { onlyIfNew: true });
+  await db().set(PHOTOS_MIGRATION, { at: new Date().toISOString() }, { onlyIfNew: true });
   return (await db().get<Catalog>(KEY))!.data.products;
 }
 
@@ -38,6 +66,11 @@ export const publicProducts = cache(async () => (await allProducts()).filter(isP
 export const getProduct = async (id: string) => (await allProducts()).find((p) => p.id === id);
 
 export const getPublicProductBySlug = async (slug: string) => (await publicProducts()).find((p) => p.slug === slug);
+
+/** Test hook: forget that the one-time photo check has run. */
+export const resetProductMigrations = () => {
+  photosChecked = false;
+};
 
 export class ProductError extends Error {}
 

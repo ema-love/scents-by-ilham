@@ -61,7 +61,11 @@ export const isOrderable = (p: Pick<Product, "visibility" | "availability">) => 
 
 export const byDisplayOrder = (a: Product, b: Product) => a.displayOrder - b.displayOrder || a.name.localeCompare(b.name);
 
-export const mediaUrl = (key: string) => `/media/${key}`;
+/**
+ * Uploaded photos live in the media store (/media/…). The launch photos ship with the site
+ * (/images/products/…) and use keys starting with "bundled/".
+ */
+export const mediaUrl = (key: string) => (key.startsWith("bundled/") ? `/images/products/${key.slice(8)}` : `/media/${key}`);
 
 /** Related products: same category first, then the rest; never the product itself, never unavailable first. */
 export function relatedProducts(product: Product, all: Product[], limit = 4) {
@@ -87,7 +91,7 @@ export function categoriesOf(products: Product[]) {
 // ------------------------------------------------------------------
 
 const imageSchema = z.object({
-  key: z.string().regex(/^products\/[a-z0-9-]+\.(webp|jpg|png)$/, "Invalid image"),
+  key: z.string().regex(/^(products\/[a-z0-9-]+\.(webp|jpg|png)|bundled\/[a-z0-9-]+\.webp)$/, "Invalid image"),
   width: z.number().int().positive().max(10000),
   height: z.number().int().positive().max(10000),
   alt: z.string().trim().max(200),
