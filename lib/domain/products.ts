@@ -61,11 +61,14 @@ export const isOrderable = (p: Pick<Product, "visibility" | "availability">) => 
 
 export const byDisplayOrder = (a: Product, b: Product) => a.displayOrder - b.displayOrder || a.name.localeCompare(b.name);
 
+/** Bump (and move the files to a new folder) whenever the shipped photos change, so no cache shows old ones. */
+const BUNDLED_PHOTOS_VERSION = "v2";
+
 /**
  * Uploaded photos live in the media store (/media/…). The launch photos ship with the site
- * (/images/products/…) and use keys starting with "bundled/".
+ * (/images/products/<version>/…) and use keys starting with "bundled/".
  */
-export const mediaUrl = (key: string) => (key.startsWith("bundled/") ? `/images/products/${key.slice(8)}` : `/media/${key}`);
+export const mediaUrl = (key: string) => (key.startsWith("bundled/") ? `/images/products/${BUNDLED_PHOTOS_VERSION}/${key.slice(8)}` : `/media/${key}`);
 
 /** Related products: same category first, then the rest; never the product itself, never unavailable first. */
 export function relatedProducts(product: Product, all: Product[], limit = 4) {

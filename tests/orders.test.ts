@@ -47,7 +47,7 @@ describe("catalogue", () => {
   it("ships every launch product with its photo", async () => {
     const products = await allProducts();
     expect(products.every((p) => p.images.length === 1 && p.images[0].key === `bundled/${p.slug}.webp`)).toBe(true);
-    expect(mediaUrl(products[0].images[0].key)).toBe("/images/products/black-humrah.webp");
+    expect(mediaUrl(products[0].images[0].key)).toBe("/images/products/v2/black-humrah.webp");
   });
 
   it("adds photos once to stores seeded before photos existed, and never re-adds removed ones", async () => {

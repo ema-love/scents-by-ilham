@@ -10,7 +10,7 @@ import { slugify } from "@/lib/utils";
  * Descriptions are intentionally left for the owner to write — nothing here claims more than
  * the product's name, collection and price.
  *
- * Each launch product ships with a photo in /public/images/products/<slug>.webp.
+ * Each launch product ships with a photo in /public/images/products/<version>/<slug>.webp.
  */
 const HUMRAH = "Humrah & Homura";
 const MORE = "More scents";
@@ -32,13 +32,13 @@ export function bundledPhoto(slug: string, name: string): ProductImage | undefin
 }
 
 const bundledSizes: Record<string, [number, number]> = {
-  "black-humrah": [312, 390],
-  "white-humrah": [312, 390],
-  "pink-humrah": [312, 390],
-  "upgraded-black-homura": [314, 392],
-  "upgraded-white-homura": [336, 420],
-  "turaren-wuta": [336, 420],
-  kulacham: [336, 420],
+  "black-humrah": [345, 431],
+  "white-humrah": [345, 431],
+  "pink-humrah": [345, 431],
+  "upgraded-black-homura": [345, 431],
+  "upgraded-white-homura": [331, 413],
+  "turaren-wuta": [331, 413],
+  kulacham: [331, 413],
 };
 
 export function seedProducts(now = new Date().toISOString()): Product[] {
