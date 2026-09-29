@@ -62,6 +62,12 @@ describe("customer timeline", () => {
     expect(steps.find((s) => s.key === "fulfilment")).toMatchObject({ state: "current", detail: "Ready for pickup" });
     expect(steps.find((s) => s.key === "completed")?.state).toBe("upcoming");
   });
+  it("shows nothing past payment as done while unpaid", () => {
+    for (const method of ["pickup", "delivery"] as const) {
+      const steps = customerTimeline(order("received", "awaiting_payment", method));
+      expect(steps.filter((s) => s.state === "done").map((s) => s.key)).toEqual(["received"]);
+    }
+  });
   it("flags a rejected payment", () => {
     expect(customerTimeline(order("received", "rejected")).find((s) => s.key === "payment")?.state).toBe("problem");
   });

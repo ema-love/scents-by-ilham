@@ -250,7 +250,11 @@ export type TimelineStep = { key: string; title: string; detail: string; state: 
 export function customerTimeline(order: Pick<Order, "status" | "payment" | "fulfilment">): TimelineStep[] {
   const { status, payment, fulfilment } = order;
   const path = fulfilmentPath(fulfilment.method);
-  const reached = (s: OrderStatus) => status !== "cancelled" && path.indexOf(status) >= path.indexOf(s);
+  const reached = (s: OrderStatus) => {
+    const at = path.indexOf(status);
+    const target = path.indexOf(s);
+    return target !== -1 && at !== -1 && at >= target;
+  };
   const paid = payment.status === "confirmed";
 
   const paymentStep: TimelineStep = {
@@ -273,7 +277,7 @@ export function customerTimeline(order: Pick<Order, "status" | "payment" | "fulf
       key: "processing",
       title: "Processing",
       detail: reached("processing") ? "Being prepared" : "We'll prepare your order once payment is confirmed",
-      state: reached("ready_for_pickup") || reached("out_for_delivery") ? "done" : reached("processing") ? "current" : "upcoming",
+      state: reached(fulfilment.method === "pickup" ? "ready_for_pickup" : "out_for_delivery") ? "done" : reached("processing") ? "current" : "upcoming",
     },
   ];
 
