@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { isOrderable, type Product } from "@/lib/domain/products";
 import { formatNaira } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import { ProductVisual } from "./product-visual";
 import { Availability } from "./availability";
-import { QuickAdd } from "./quick-add";
 
 /** Product, price, availability, action — readable at a glance on a small phone. */
 export function ProductCard({ product, priority }: { product: Product; priority?: boolean }) {
@@ -14,20 +12,21 @@ export function ProductCard({ product, priority }: { product: Product; priority?
     <article className="group relative flex h-full flex-col">
       <ProductVisual product={product} priority={priority} className={cn("lift", !orderable && "opacity-75 saturate-[.7]")} />
       <div className="mt-3 flex flex-1 flex-col">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <h3 className="text-[13px] leading-snug font-semibold tracking-[0.08em] text-balance uppercase">
-              <Link href={`/products/${product.slug}`} className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none">
-                {product.name}
-              </Link>
-            </h3>
-            <p className="figure mt-1 text-[17px]">{formatNaira(product.price)}</p>
-          </div>
-          {orderable && <QuickAdd productId={product.id} name={product.name} />}
-        </div>
+        <h3 className="text-[13px] leading-snug font-semibold tracking-[0.08em] text-balance uppercase">
+          <Link href={`/products/${product.slug}`} className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none">
+            {product.name}
+          </Link>
+        </h3>
+        <p className="figure mt-1 text-[17px]">{formatNaira(product.price)}</p>
         <Availability product={product} className="mt-1 mb-3" />
-        <span aria-hidden className="mt-auto inline-flex items-center gap-1.5 text-[11.5px] font-semibold tracking-[0.14em] text-lavender-ink uppercase">
-          View product <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+        <span
+          aria-hidden
+          className={cn(
+            "mt-auto inline-flex h-10 items-center justify-center rounded-[4px] text-[11.5px] font-medium tracking-[0.12em] uppercase ring-1 transition-colors duration-300",
+            orderable ? "text-plum ring-plum/40 group-hover:bg-plum group-hover:text-primary-foreground" : "text-muted-foreground ring-border-strong",
+          )}
+        >
+          View product
         </span>
       </div>
       <span aria-hidden className="pointer-events-none absolute -inset-1.5 rounded-xl ring-2 ring-transparent transition group-has-[a:focus-visible]:ring-ring" />

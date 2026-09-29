@@ -26,7 +26,7 @@ export default async function ShopPage(props: PageProps<"/shop">) {
     <div className="page pt-8 sm:pt-12">
       <p className="eyebrow">Shop</p>
       <h1 className="display mt-2 text-[clamp(2.8rem,11vw,4rem)]">Shop</h1>
-      <p className="lede mt-3 max-w-lg">Explore our fragrances. Every price is shown up front — tap + to add a scent to your order.</p>
+      <p className="lede mt-3 max-w-lg">Explore our fragrances. Every price is shown up front — tap a scent to see more and add it to your order.</p>
 
       {categories.length > 1 && (
         <nav aria-label="Filter by collection" className="mt-7">
